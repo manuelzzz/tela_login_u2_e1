@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 class TelaLogin extends StatefulWidget {
@@ -8,8 +10,29 @@ class TelaLogin extends StatefulWidget {
 }
 
 class _TelaLoginState extends State<TelaLogin> {
-  String login = '';
-  String senha = '';
+  final formKey = GlobalKey<FormState>();
+  final loginController = TextEditingController();
+  final senhaController = TextEditingController();
+
+  String? validateLogin(String? value) {
+    if (value == null || value.isEmpty) {
+      return "O login é obrigatório";
+    }
+
+    return null;
+  }
+
+  String? validateSenha(String? value) {
+    if (value == null || value.isEmpty) {
+      return "A senha é obrigatória";
+    }
+
+    if (value.length < 6) {
+      return "A senha deve conter pelo menos 6 caracteres";
+    }
+
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,36 +48,36 @@ class _TelaLoginState extends State<TelaLogin> {
             children: [
               Text("Minha aplicação", style: theme.textTheme.headlineLarge),
               const SizedBox(height: 20),
-
-              TextFormField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  label: Text("Login"),
+              Form(
+                key: formKey,
+                child: Column(
+                  spacing: 1,
+                  children: [
+                    TextFormField(
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        label: Text("Login"),
+                      ),
+                      validator: validateLogin,
+                      controller: loginController,
+                    ),
+                    TextFormField(
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        label: Text("Senha"),
+                      ),
+                      obscureText: true,
+                      validator: validateSenha,
+                      controller: senhaController,
+                    ),
+                  ],
                 ),
-                onChanged: (valor) {
-                  setState(() {
-                    login = valor;
-                  });
-                },
               ),
-
-              TextFormField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  label: Text("Senha"),
-                ),
-                obscureText: true,
-                onChanged: (valor) {
-                  setState(() {
-                    senha = valor;
-                  });
-                },
-              ),
-
               ElevatedButton(
                 onPressed: () {
-                  print("Login: $login");
-                  print("Senha: $senha");
+                  formKey.currentState?.validate();
+                  log("Login: ${loginController.text}");
+                  log("Senha: ${senhaController.text}");
                 },
                 style: const ButtonStyle(
                   minimumSize: WidgetStatePropertyAll(
