@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:tela_login_u2_e1/src/utils/validator_utils.dart';
+import 'package:tela_login_u2_e1/src/widgets/login_with_icon.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -53,6 +54,31 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ],
                 ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  LoginWithIcon(
+                    onPressed: () {},
+                    uri:
+                        "https://img.icons8.com/?size=100&id=62856&format=png&color=000000",
+                  ),
+                  LoginWithIcon(
+                    onPressed: () {},
+                    uri:
+                        "https://img.icons8.com/?size=100&id=17949&format=png&color=000000",
+                  ),
+                  LoginWithIcon(
+                    onPressed: () {},
+                    uri:
+                        "https://img.icons8.com/?size=100&id=118497&format=png&color=000000",
+                  ),
+                  LoginWithIcon(
+                    onPressed: () {},
+                    uri:
+                        "https://img.icons8.com/?size=100&id=30840&format=png&color=000000",
+                  ),
+                ],
               ),
               ElevatedButton(
                 onPressed: () {
