@@ -8,6 +8,9 @@ class TelaLogin extends StatefulWidget {
 }
 
 class _TelaLoginState extends State<TelaLogin> {
+  String login = '';
+  String senha = '';
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -22,22 +25,38 @@ class _TelaLoginState extends State<TelaLogin> {
             children: [
               Text("Minha aplicação", style: theme.textTheme.headlineLarge),
               const SizedBox(height: 20),
+
               TextFormField(
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   label: Text("Login"),
                 ),
+                onChanged: (valor) {
+                  setState(() {
+                    login = valor;
+                  });
+                },
               ),
+
               TextFormField(
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   label: Text("Senha"),
                 ),
                 obscureText: true,
+                onChanged: (valor) {
+                  setState(() {
+                    senha = valor;
+                  });
+                },
               ),
+
               ElevatedButton(
-                onPressed: () {},
-                style: ButtonStyle(
+                onPressed: () {
+                  print("Login: $login");
+                  print("Senha: $senha");
+                },
+                style: const ButtonStyle(
                   minimumSize: WidgetStatePropertyAll(
                     Size(double.infinity, 40),
                   ),
