@@ -51,7 +51,7 @@ class _TelaLoginState extends State<TelaLogin> {
               Form(
                 key: formKey,
                 child: Column(
-                  spacing: 1,
+                  spacing: 5,
                   children: [
                     TextFormField(
                       decoration: InputDecoration(
