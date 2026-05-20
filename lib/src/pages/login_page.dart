@@ -1,38 +1,19 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:tela_login_u2_e1/src/utils/validator_utils.dart';
 
-class TelaLogin extends StatefulWidget {
-  const TelaLogin({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
   @override
-  State<TelaLogin> createState() => _TelaLoginState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _TelaLoginState extends State<TelaLogin> {
+class _LoginPageState extends State<LoginPage> {
   final formKey = GlobalKey<FormState>();
   final loginController = TextEditingController();
   final senhaController = TextEditingController();
-
-  String? validateLogin(String? value) {
-    if (value == null || value.isEmpty) {
-      return "O login é obrigatório";
-    }
-
-    return null;
-  }
-
-  String? validateSenha(String? value) {
-    if (value == null || value.isEmpty) {
-      return "A senha é obrigatória";
-    }
-
-    if (value.length < 6) {
-      return "A senha deve conter pelo menos 6 caracteres";
-    }
-
-    return null;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +39,7 @@ class _TelaLoginState extends State<TelaLogin> {
                         border: OutlineInputBorder(),
                         label: Text("Login"),
                       ),
-                      validator: validateLogin,
+                      validator: ValidatorUtils.loginValidator,
                       controller: loginController,
                     ),
                     TextFormField(
@@ -67,7 +48,7 @@ class _TelaLoginState extends State<TelaLogin> {
                         label: Text("Senha"),
                       ),
                       obscureText: true,
-                      validator: validateSenha,
+                      validator: ValidatorUtils.senhaValidator,
                       controller: senhaController,
                     ),
                   ],

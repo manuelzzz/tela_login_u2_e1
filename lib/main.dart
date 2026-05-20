@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tela_login_u2_e1/src/tela_login.dart';
+import 'package:tela_login_u2_e1/src/pages/login_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: false,
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
       ),
-      home: const TelaLogin(),
+      home: const LoginPage(),
     );
   }
 }
