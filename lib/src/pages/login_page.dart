@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:tela_login_u2_e1/src/utils/validator_utils.dart';
 import 'package:tela_login_u2_e1/src/widgets/login_with_icon.dart';
-import 'package:tela_login_u2_e1/src/pages/loja_online.dart'; 
+import 'package:tela_login_u2_e1/src/pages/loja_online.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -13,11 +13,10 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final formKey = GlobalKey<FormState>();
-  final loginController = TextEditingController();
-  final senhaController = TextEditingController();
-  
-  String? _mensagemErro;
+  final _formKey = GlobalKey<FormState>();
+  final _loginController = TextEditingController();
+  final _senhaController = TextEditingController();
+  String _errorMessage = "";
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +33,7 @@ class _LoginPageState extends State<LoginPage> {
               Text("Minha aplicação", style: theme.textTheme.headlineLarge),
               const SizedBox(height: 20),
               Form(
-                key: formKey,
+                key: _formKey,
                 child: Column(
                   spacing: 5,
                   children: [
@@ -42,18 +41,20 @@ class _LoginPageState extends State<LoginPage> {
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         label: Text("Login"),
+                        errorText: _errorMessage.isEmpty ? null : _errorMessage,
                       ),
                       validator: ValidatorUtils.loginValidator,
-                      controller: loginController,
+                      controller: _loginController,
                     ),
                     TextFormField(
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         label: Text("Senha"),
+                        errorText: _errorMessage.isEmpty ? null : _errorMessage,
                       ),
                       obscureText: true,
                       validator: ValidatorUtils.senhaValidator,
-                      controller: senhaController,
+                      controller: _senhaController,
                     ),
                   ],
                 ),
@@ -81,24 +82,26 @@ class _LoginPageState extends State<LoginPage> {
                     uri:
                         "https://img.icons8.com/?size=100&id=30840&format=png&color=000000",
                   ),
-                  ],
-                ),
+                ],
+              ),
               ElevatedButton(
                 onPressed: () {
-                  if (formKey.currentState?.validate() ?? false) {
-                    if (loginController.text == 'admin' && senhaController.text == '123456') {
+                  if (_formKey.currentState?.validate() ?? false) {
+                    if (_loginController.text != 'admin' ||
+                        _senhaController.text != '123456') {
                       setState(() {
-                        _mensagemErro = null;
+                        _errorMessage = "Login ou senha incorretos";
                       });
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => const LojaOnlinePage()),
-                      );
-                    } else {
-                      setState(() {
-                        _mensagemErro = "Credenciais inválidas";
-                      });
+                      return;
                     }
+
+                    _errorMessage = "";
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const LojaOnlinePage(),
+                      ),
+                    );
                   }
                 },
                 style: const ButtonStyle(
