@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:tela_login_u2_e1/src/utils/validator_utils.dart';
 import 'package:tela_login_u2_e1/src/widgets/login_with_icon.dart';
@@ -30,7 +28,7 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             spacing: 5,
             children: [
-              Text("Minha aplicação", style: theme.textTheme.headlineLarge),
+              Text("Loja online", style: theme.textTheme.headlineLarge),
               const SizedBox(height: 20),
               Form(
                 key: _formKey,
