@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:tela_login_u2_e1/src/pages/catalog_page.dart';
 import 'package:tela_login_u2_e1/src/utils/validator_utils.dart';
 import 'package:tela_login_u2_e1/src/widgets/login_with_icon.dart';
 
@@ -82,9 +83,15 @@ class _LoginPageState extends State<LoginPage> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  formKey.currentState?.validate();
+                  final isValid = formKey.currentState?.validate() ?? false;
                   log("Login: ${loginController.text}");
                   log("Senha: ${senhaController.text}");
+                  if (!isValid) {
+                    return;
+                  }
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => const CatalogPage()),
+                  );
                 },
                 style: const ButtonStyle(
                   minimumSize: WidgetStatePropertyAll(
