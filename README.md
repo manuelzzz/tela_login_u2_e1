@@ -101,3 +101,9 @@ lib/
 
 - O projeto utiliza `IAuthConfig` para montar headers HTTP, inclusive token quando autenticado.
 - A API de produtos atual é publica e nao requer autenticacao para leitura.
+
+
+## Acesso ao app
+
+- Login: johnd
+- Senha: m38rmF$

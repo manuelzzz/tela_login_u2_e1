@@ -3,8 +3,9 @@ import 'package:tela_login_u2_e1/src/modules/products/domain/entities/product.da
 
 class ProductWidget extends StatelessWidget {
   final Product product;
+  final VoidCallback onBuy;
 
-  const ProductWidget({super.key, required this.product});
+  const ProductWidget({super.key, required this.product, required this.onBuy});
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +93,7 @@ class ProductWidget extends StatelessWidget {
                     ),
                     const SizedBox(width: 8),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: onBuy,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.indigoAccent,
                         padding: const EdgeInsets.symmetric(
