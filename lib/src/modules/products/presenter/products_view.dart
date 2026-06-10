@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:tela_login_u2_e1/src/modules/cart/presenter/cart_view_model.dart';
 import 'package:tela_login_u2_e1/src/modules/products/presenter/product_view_model.dart';
 import 'package:tela_login_u2_e1/src/modules/products/presenter/widgets/product_widget.dart';
 
@@ -11,11 +13,13 @@ class ProductsView extends StatefulWidget {
 
 class _ProductsViewState extends State<ProductsView> {
   final ProductViewModel _viewModel = ProductViewModel();
+  final CartViewModel _cartViewModel = Modular.get<CartViewModel>();
 
   @override
   void initState() {
     super.initState();
     _viewModel.loadProducts();
+    _cartViewModel.loadCart();
   }
 
   @override
@@ -30,7 +34,18 @@ class _ProductsViewState extends State<ProductsView> {
       appBar: AppBar(
         title: const Text('Loja Online'),
         actions: [
-          IconButton(icon: const Icon(Icons.shopping_cart), onPressed: () {}),
+          ListenableBuilder(
+            listenable: _cartViewModel,
+            builder: (context, _) {
+              return _CartIconButton(
+                itemCount: _cartViewModel.totalItems,
+                onPressed: () async {
+                  await Modular.to.pushNamed('/cart');
+                  await _cartViewModel.loadCart();
+                },
+              );
+            },
+          ),
         ],
       ),
       body: ListenableBuilder(
@@ -59,12 +74,61 @@ class _ProductsViewState extends State<ProductsView> {
                 mainAxisSpacing: 10,
               ),
               itemBuilder: (context, index) {
-                return ProductWidget(product: _viewModel.products[index]);
+                final product = _viewModel.products[index];
+
+                return ProductWidget(
+                  product: product,
+                  onBuy: () => _cartViewModel.addProduct(product),
+                );
               },
             ),
           );
         },
       ),
+    );
+  }
+}
+
+class _CartIconButton extends StatelessWidget {
+  final int itemCount;
+  final VoidCallback onPressed;
+
+  const _CartIconButton({required this.itemCount, required this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      clipBehavior: Clip.none,
+      alignment: Alignment.center,
+      children: [
+        IconButton(
+          icon: const Icon(Icons.shopping_cart),
+          onPressed: onPressed,
+          tooltip: 'Carrinho',
+        ),
+        if (itemCount > 0)
+          Positioned(
+            top: 6,
+            right: 6,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+              decoration: BoxDecoration(
+                color: Colors.red,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              constraints: const BoxConstraints(minWidth: 18, minHeight: 18),
+              child: Text(
+                itemCount > 99 ? '99+' : itemCount.toString(),
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 11,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+      ],
     );
   }
 }
