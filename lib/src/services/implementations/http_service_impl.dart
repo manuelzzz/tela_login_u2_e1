@@ -5,7 +5,7 @@ import 'package:tela_login_u2_e1/src/services/interfaces/interface_http_service.
 
 class HttpServiceImpl implements IHttpService {
   final _baseUrl = 'https://dummyjson.com';
-  final _auth = Modular.get<IAuthConfig>;
+  final _auth = Modular.get<IAuthConfig>();
   final _dio = Dio();
 
   @override
@@ -16,6 +16,7 @@ class HttpServiceImpl implements IHttpService {
     try {
       return await _dio.get(
         "$_baseUrl$endpoint",
+        queryParameters: queryParameters,
         options: Options(headers: _auth().generateHeaders()),
       );
     } catch (e) {

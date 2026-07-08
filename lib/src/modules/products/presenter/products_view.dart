@@ -14,16 +14,30 @@ class ProductsView extends StatefulWidget {
 class _ProductsViewState extends State<ProductsView> {
   final ProductViewModel _viewModel = ProductViewModel();
   final CartViewModel _cartViewModel = Modular.get<CartViewModel>();
+  
+  // 1. Criamos o controlador de rolagem
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
     _viewModel.loadProducts();
     _cartViewModel.loadCart();
+
+    // 2. Adicionamos o listener para detectar o final da rolagem
+    _scrollController.addListener(() {
+      // Usamos uma margem de segurança (ex: 100 pixels antes do fim) 
+      // para carregar antes de o usuário ver a tela travar
+      if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 100) {
+        _viewModel.loadMoreProducts(); // Chama a função que criaremos no ViewModel
+      }
+    });
   }
 
   @override
   void dispose() {
+    // 3. Limpamos o controlador
+    _scrollController.dispose();
     _viewModel.dispose();
     super.dispose();
   }
@@ -51,11 +65,12 @@ class _ProductsViewState extends State<ProductsView> {
       body: ListenableBuilder(
         listenable: _viewModel,
         builder: (context, _) {
-          if (_viewModel.isLoading) {
+          // Loading da PRIMEIRA página
+          if (_viewModel.isLoading && _viewModel.products.isEmpty) {
             return const Center(child: CircularProgressIndicator());
           }
 
-          if (_viewModel.errorMessage != null) {
+          if (_viewModel.errorMessage != null && _viewModel.products.isEmpty) {
             return Center(child: Text(_viewModel.errorMessage!));
           }
 
@@ -63,25 +78,39 @@ class _ProductsViewState extends State<ProductsView> {
             return const Center(child: Text('Nenhum produto encontrado'));
           }
 
-          return Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: GridView.builder(
-              itemCount: _viewModel.products.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 0.62,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-              ),
-              itemBuilder: (context, index) {
-                final product = _viewModel.products[index];
+          // 4. Envolvemos o GridView em uma Column para o Loading de paginação
+          return Column(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: GridView.builder(
+                    controller: _scrollController, // 5. Anexamos o controlador aqui!
+                    itemCount: _viewModel.products.length,
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 0.62,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                    ),
+                    itemBuilder: (context, index) {
+                      final product = _viewModel.products[index];
 
-                return ProductWidget(
-                  product: product,
-                  onBuy: () => _cartViewModel.addProduct(product),
-                );
-              },
-            ),
+                      return ProductWidget(
+                        product: product,
+                        onBuy: () => _cartViewModel.addProduct(product),
+                      );
+                    },
+                  ),
+                ),
+              ),
+              // 6. Indicador de carregamento no rodapé (para a paginação)
+              if (_viewModel.isLoadingMore)
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 16.0),
+                  child: CircularProgressIndicator(),
+                ),
+            ],
           );
         },
       ),
