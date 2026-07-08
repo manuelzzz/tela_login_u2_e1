@@ -5,7 +5,7 @@ import 'package:tela_login_u2_e1/src/services/interfaces/interface_http_service.
 
 class HttpServiceImpl implements IHttpService {
   final _baseUrl = 'https://dummyjson.com';
-  final _auth = Modular.get<IAuthConfig>();
+  final _auth = Modular.get<IAuthConfig>(); 
   final _dio = Dio();
 
   @override
@@ -17,7 +17,7 @@ class HttpServiceImpl implements IHttpService {
       return await _dio.get(
         "$_baseUrl$endpoint",
         queryParameters: queryParameters,
-        options: Options(headers: _auth().generateHeaders()),
+        options: Options(headers: _auth.generateHeaders()),
       );
     } catch (e) {
       rethrow;
@@ -33,7 +33,7 @@ class HttpServiceImpl implements IHttpService {
       return await _dio.delete(
         "$_baseUrl$endpoint",
         options: Options(
-          headers: _auth().generateHeaders(extraHeaders: extraHeaders),
+          headers: _auth.generateHeaders(extraHeaders: extraHeaders),
         ),
       );
     } catch (e) {
@@ -52,7 +52,7 @@ class HttpServiceImpl implements IHttpService {
         "$_baseUrl$endpoint",
         data: data,
         options: Options(
-          headers: _auth().generateHeaders(extraHeaders: extraHeaders),
+          headers: _auth.generateHeaders(extraHeaders: extraHeaders),
         ),
       );
     } catch (e) {
@@ -73,7 +73,7 @@ class HttpServiceImpl implements IHttpService {
         data: data,
         queryParameters: queryParameters,
         options: Options(
-          headers: _auth().generateHeaders(extraHeaders: extraHeaders),
+          headers: _auth.generateHeaders(extraHeaders: extraHeaders),
         ),
       );
     } catch (e) {
