@@ -12,8 +12,9 @@ class ProductDatasourceImpl implements IProductDatasource {
   Future<List<Product>> getProducts() async {
     try {
       final result = await httpService.get(endpoint: '/products');
+      final products = result.data['products'] as List<dynamic>;
 
-      return ProductModel.listFromJson(result.data);
+      return ProductModel.listFromJson(products);
     } catch (e) {
       rethrow;
     }

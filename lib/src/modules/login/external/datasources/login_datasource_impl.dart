@@ -17,7 +17,7 @@ class LoginDatasourceImpl implements ILoginDatasource {
         data: {'username': username, 'password': password},
       );
 
-      return response.data['token'];
+      return response.data['accessToken'] ?? response.data['token'];
     } catch (e) {
       rethrow;
     }
