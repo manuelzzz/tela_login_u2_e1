@@ -17,7 +17,7 @@ class ProductModel extends Product {
       price: (json['price'] as num?)?.toDouble(),
       description: json['description'] as String?,
       category: json['category'] as String?,
-      image: json['image'] as String?,
+      image: _imageFromJson(json),
     );
   }
 
@@ -34,5 +34,27 @@ class ProductModel extends Product {
 
   static List<ProductModel> listFromJson(List<dynamic> jsonList) {
     return jsonList.map((json) => ProductModel.fromJson(json)).toList();
+  }
+
+  static String? _imageFromJson(Map<String, dynamic> json) {
+    final image = json['image'] as String?;
+
+    if (image != null && image.isNotEmpty) {
+      return image;
+    }
+
+    final thumbnail = json['thumbnail'] as String?;
+
+    if (thumbnail != null && thumbnail.isNotEmpty) {
+      return thumbnail;
+    }
+
+    final images = json['images'];
+
+    if (images is List && images.isNotEmpty && images.first is String) {
+      return images.first as String;
+    }
+
+    return null;
   }
 }

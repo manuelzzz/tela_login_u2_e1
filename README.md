@@ -11,11 +11,11 @@ Este projeto utiliza:
 - [Dio](https://pub.dev/packages/dio) para requisicoes HTTP
 - [Provider](https://pub.dev/packages/provider) (Para utilizar o ChangeNotifier para gerenciamento de estado)
 
-A listagem de produtos consome dados da API publica Fake Store API.
+A listagem de produtos consome dados da API publica DummyJSON.
 
 Base URL:
 
-`https://fakestoreapi.com`
+`https://dummyjson.com`
 
 Endpoint utilizado:
 
@@ -62,7 +62,7 @@ O projeto segue uma separacao por modulos e camadas:
 3. `GetProductsImpl` consulta o repositorio `IProductRepository`.
 4. `ProductRepositoryImpl` delega ao datasource `IProductDatasource`.
 5. `ProductDatasourceImpl` realiza `GET /products` usando `IHttpService`.
-6. O JSON retornado e convertido em `ProductModel` e exibido em grid.
+6. A lista em `products` no JSON retornado e convertida em `ProductModel` e exibida em grid.
 
 Estados tratados na tela (utilizando ChangeNotifier):
 
@@ -100,10 +100,10 @@ lib/
 ## Observacoes
 
 - O projeto utiliza `IAuthConfig` para montar headers HTTP, inclusive token quando autenticado.
-- A API de produtos atual é publica e nao requer autenticacao para leitura.
+- A API de produtos atual e publica e nao requer autenticacao para leitura.
 
 
 ## Acesso ao app
 
-- Login: johnd
-- Senha: m38rmF$
+- Login: emilys
+- Senha: emilyspass

@@ -4,7 +4,7 @@ import 'package:tela_login_u2_e1/src/config/interface_auth_config.dart';
 import 'package:tela_login_u2_e1/src/services/interfaces/interface_http_service.dart';
 
 class HttpServiceImpl implements IHttpService {
-  final _baseUrl = 'https://fakestoreapi.com';
+  final _baseUrl = 'https://dummyjson.com';
   final _auth = Modular.get<IAuthConfig>;
   final _dio = Dio();
 
