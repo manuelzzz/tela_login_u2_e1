@@ -9,9 +9,19 @@ class ProductDatasourceImpl implements IProductDatasource {
   ProductDatasourceImpl(this.httpService);
 
   @override
-  Future<List<Product>> getProducts() async {
+  Future<List<Product>> getProducts({required int page}) async {
+    const int limit = 20;
+    final int skip = (page - 1) * limit;
+
     try {
-      final result = await httpService.get(endpoint: '/products');
+      final result = await httpService.get(
+        endpoint: '/products',
+        queryParameters: {
+          'limit': limit,
+          'skip': skip,
+        },
+      );
+      
       final products = result.data['products'] as List<dynamic>;
 
       return ProductModel.listFromJson(products);

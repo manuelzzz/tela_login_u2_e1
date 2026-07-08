@@ -8,9 +8,9 @@ class ProductRepositoryImpl implements IProductRepository {
   ProductRepositoryImpl(this.datasource);
 
   @override
-  Future<List<Product>> getProducts() {
+  Future<List<Product>> getProducts({required int page}) {
     try {
-      return datasource.getProducts();
+      return datasource.getProducts(page: page);
     } catch (e) {
       rethrow;
     }
